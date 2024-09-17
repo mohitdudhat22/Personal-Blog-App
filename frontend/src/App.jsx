@@ -1,34 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Route, Routes } from "react-router-dom"
+import Dashboard from "./pages/Dashboard"
+import Login from "./pages/Login"
+import Signup from "./pages/Signup"
+import About from "./pages/About"
+import Blogs from "./pages/Blogs"
+import Contact from "./pages/Contact"
+import NotFound from "./pages/NotFound"
+import Blog from "./pages/Blog"
+import Edit from "./pages/Edit"
+import Success from "./pages/Success"
+import Profile from "./pages/Profile"
+import ProfileEdit from "./pages/ProfileEdit"
+import axios from "axios"
+import { useEffect, useState } from "react"
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/getAllUsers`);
+        console.log('All users:', response.data);
+        setUsers(response.data);
+        localStorage.setItem('users', JSON.stringify(response.data));
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
 
+    fetchUsers();
+  }, []);
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Routes>
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/blogs" element={<Blogs />} />
+      <Route path="/blog/:id" element={<Blog />} />
+      <Route path="/edit/:id" element={<Edit />} />
+      <Route path="/success" element={<Success />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   )
 }
 
