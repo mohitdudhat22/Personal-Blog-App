@@ -9,27 +9,11 @@ import NotFound from "./pages/NotFound"
 import Blog from "./pages/Blog"
 import Edit from "./pages/Edit"
 import Success from "./pages/Success"
-import Profile from "./pages/Profile"
-import ProfileEdit from "./pages/ProfileEdit"
 import axios from "axios"
 import { useEffect, useState } from "react"
 
 function App() {
-  const [users, setUsers] = useState([]);
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/getAllUsers`);
-        console.log('All users:', response.data);
-        setUsers(response.data);
-        localStorage.setItem('users', JSON.stringify(response.data));
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
-    };
-
-    fetchUsers();
-  }, []);
+  
   return (
     <Routes>
       <Route path="/" element={<Dashboard />} />
