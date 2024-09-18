@@ -13,20 +13,7 @@ export default function Dashboard() {
     setSearch(e.target.value);
   }
   const [users, setUsers] = useState([]);
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/getAllUsers`);
-        console.log('All users:', response.data);
-        setUsers(response.data);
-        localStorage.setItem('users', JSON.stringify(response.data));
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
-    };
 
-    fetchUsers();
-  }, []);
   const getAllPosts = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -58,8 +45,18 @@ export default function Dashboard() {
       console.error('Error deleting post:', error);
     }
   };
-
+  
   useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/getAllUsers`);
+        console.log('All users:', response.data);
+        setUsers(response.data);
+        localStorage.setItem('users', JSON.stringify(response.data));
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
     const fetchPosts = async () => {
       try {
         setIsLoading(true);
@@ -73,8 +70,8 @@ export default function Dashboard() {
     };
 
     fetchPosts();
+    fetchUsers();
   }, []);
-
   const filteredBlogs = blogs.filter(blog => 
     blog.title.toLowerCase().includes(search.toLowerCase()) || 
     blog.content.toLowerCase().includes(search.toLowerCase())
@@ -130,7 +127,14 @@ export default function Dashboard() {
                         </div>
                       </div>
                   
+
                       <div className="flex justify-end items-center mt-4">
+                      <button 
+                            onClick={() => deletePost(blog._id)}
+                            className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded-md text-sm mr-3"
+                          >
+                            Edit
+                          </button>
                       <button 
                             onClick={() => deletePost(blog._id)}
                             className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-md text-sm mr-3"
