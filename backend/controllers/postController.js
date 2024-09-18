@@ -5,7 +5,7 @@ exports.getPosts = async (req, res) => {
   let user = req.cookies.users
   console.log(user);
   try {
-    const posts = await BlogPost.find().select('-__v');
+    const posts = await BlogPost.find();
     res.json(posts);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching posts', error: error.message });

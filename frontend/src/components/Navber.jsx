@@ -42,7 +42,7 @@ export default function Navber() {
                                             Logo
                                         </div>
                                     )}
-                                    <span className="font-semibold text-gray-500 text-lg">BlogWithLocalStorage</span>
+                                    <span className="font-semibold text-gray-500 text-lg">Blogs</span>
                                 </Link>
                             </div>
                             {/* Primary Navbar items */}

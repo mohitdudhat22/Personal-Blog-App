@@ -19,7 +19,7 @@ export default function Blogs() {
     const user = localStorage.getItem('user');
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/posts`, {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/posts`, {
         title,
         content,
         author: user?.username || "mohit",
