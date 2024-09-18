@@ -26,11 +26,11 @@ exports.getPostById = async (req, res) => {
 
 exports.createPost = async (req, res) => {
   let user = req.cookies.user
-  console.log(user);
+  // console.log(user);
   try {
     console.log(req.body);
-    const { title, content, author } = req.body;
-    const newPost = new BlogPost({ title, content, author , userId: user.id });
+    const { title, content, author, userId } = req.body;
+    const newPost = new BlogPost({ title, content, author , userId });
     const savedPost = await newPost.save();
     res.status(201).json(savedPost);
   } catch (error) {

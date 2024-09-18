@@ -13,35 +13,42 @@ export default function Blogs() {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
-
+  
     const title = e.target.title.value;
     const content = e.target.content.value;
-    const user = localStorage.getItem('user');
-
+    const userString = localStorage.getItem('user');
+    let user;
+  
+    try {
+      user = JSON.parse(userString);
+    } catch (error) {
+      console.error('Error parsing user data:', error);
+      setError('Invalid user data. Please log in again.');
+      setIsLoading(false);
+      return;
+    }
+  console.log(user);
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/posts`, {
         title,
         content,
-        author: user?.username || "mohit",
+        author: user?.username || "Anonymous",
+        userId: user?.id || "default_id",
       }, {
         headers: {
           'Content-Type': 'application/json',
-          // The cookie header is typically handled automatically by the browser
-          // If you need to set it manually, you'd do it like this:
-          'Cookie': 'user=j%3A%7B%22id%22%3A%2266e9c355f5b8e983a91c68d4%22%2C%22email%22%3A%22johndoeadmiasasdfdn%40example.com%22%2C%22password%22%3A%22%242b%2410%247SsIyQpvfTHiTItvXP0HlOE4vRsvzS7.tz7lkYmehqLQG2Upd6UbW%22%7D'
         },
-        withCredentials: true // This is important for sending cookies
+        withCredentials: true
       });
       console.log('Blog created:', response.data);
       navigate('/');
     } catch (error) {
-      console.error('Error creating blog:', error);
+      console.error('Error creating blog:', error.response ? error.response.data : error.message);
       setError('Failed to create blog. Please try again.');
     } finally {
       setIsLoading(false);
     }
   }
-
   return (
     <Layout>
       <div className='bg-gray-100 py-10 flex justify-center items-center'>
