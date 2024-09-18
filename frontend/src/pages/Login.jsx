@@ -28,7 +28,7 @@ export default function Login() {
             localStorage.setItem('user', JSON.stringify(user));
 
             // Redirect to home page
-            navigate('/');
+            navigate('/dashboard');
         } catch (error) {
             setError(error.response?.data?.message || 'Login failed. Please try again.');
         }
