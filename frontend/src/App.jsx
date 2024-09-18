@@ -17,8 +17,8 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Dashboard />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
+      {/* <Route path="/login" element={<Login />} /> */}
+      {/* <Route path="/signup" element={<Signup />} /> */}
       <Route path="/about" element={<About />} />
       <Route path="/blogs" element={<Blogs />} />
       <Route path="/blog/:id" element={<Blog />} />
