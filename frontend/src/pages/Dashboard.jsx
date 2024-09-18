@@ -8,7 +8,6 @@ export default function Dashboard() {
   const [blogs, setBlogs] = useState([]);
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const user = JSON.parse(localStorage.getItem('user')) || {};
   const handleChange = (e) => {
     setSearch(e.target.value);
@@ -57,7 +56,6 @@ export default function Dashboard() {
       setBlogs(blogs.filter(blog => blog._id !== postId));
     } catch (error) {
       console.error('Error deleting post:', error);
-      setError('Failed to delete post. Please try again.');
     }
   };
 
@@ -68,7 +66,7 @@ export default function Dashboard() {
         const fetchedPosts = await getAllPosts();
         setBlogs(fetchedPosts);
       } catch (err) {
-        setError('Failed to fetch posts. Please try again later.');
+        console.log(err);
       } finally {
         setIsLoading(false);
       }
@@ -83,7 +81,6 @@ export default function Dashboard() {
   );
 
   if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
 
   return (
     <Layout>
