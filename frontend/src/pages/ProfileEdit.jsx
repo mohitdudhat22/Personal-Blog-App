@@ -5,13 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 export default function ProfileEdit() {
     const navigate = useNavigate();
     const {id} = useParams(); 
-    const users = JSON.parse(localStorage.getItem('users')) || []
-    const user = users.find(user => user.isLogin);
-    // if user login id is accepted otherwise not allow 
-    if(user.id != id){
-        alert('You can not access without login');
-        window.location.href = '/';
-    }
+    const user = localStorage.getItem('user');
 
     const handleProfileUpdate = (e) => {
         e.preventDefault();
@@ -51,7 +45,7 @@ export default function ProfileEdit() {
                                 </div>
                                 <div className="flex flex-col mb-2">
                                     <label className="text-gray-700">Password</label>
-                                    <input type="text" name="password" defaultValue={atob(user.password)} className="border border-gray-300 px-2 py-1 rounded focus:outline-green-500" required aria-required />
+                                    <input type="text" name="password" defaultValue={user.password} className="border border-gray-300 px-2 py-1 rounded focus:outline-green-500" required aria-required />
                                 </div>
                                 <div className="flex flex-col mb-2">
                                     <button className="bg-green-500 text-white px-2 py-1 rounded capitalize">Update</button>

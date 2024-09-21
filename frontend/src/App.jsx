@@ -4,18 +4,18 @@ import Login from "./pages/Login"
 import Signup from "./pages/Signup"
 import About from "./pages/About"
 import Blogs from "./pages/Blogs"
-import Contact from "./pages/Contact"
 import NotFound from "./pages/NotFound"
 import Blog from "./pages/Blog"
 import Edit from "./pages/Edit"
 import Success from "./pages/Success"
-import axios from "axios"
-import { useEffect, useState } from "react"
+import Profile from "./pages/Profile"
+import Post from "./pages/Post"
 
 function App() {
   
   return (
     <Routes>
+      <Route path="/blog/:id" element={<Post />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
@@ -25,6 +25,7 @@ function App() {
       <Route path="/edit/:id" element={<Edit />} />
       <Route path="/success" element={<Success />} />
       <Route path="*" element={<NotFound />} />
+      <Route path="/profile" element={<Profile />} />
     </Routes>
   )
 }

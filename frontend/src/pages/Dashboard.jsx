@@ -34,18 +34,6 @@ export default function Dashboard() {
     }
   };
 
-  const deletePost = async (postId) => {
-    try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/api/posts/${postId}`, {
-        withCredentials: true
-      });
-      // Remove the deleted post from the state
-      setBlogs(blogs.filter(blog => blog._id !== postId));
-    } catch (error) {
-      console.error('Error deleting post:', error);
-    }
-  };
-  
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -107,18 +95,22 @@ export default function Dashboard() {
             {filteredBlogs.length > 0 ? (
               filteredBlogs.map(blog => (
                 <div className="w-full md:w-1/3 px-4 mb-4" key={blog._id}>
-                  <div className="bg-white rounded-lg">
-                    <div className="p-4">
+                  <div className="bg-white rounded-lg shadow h-full flex flex-col">
+                    <div className="p-4 flex-grow flex flex-col">
                       {/* Placeholder for image */}
-                      <div className="h-48 w-full rounded-lg bg-gray-300 mb-4 flex items-center justify-center text-gray-500">
-                        Image Placeholder
+                      {blog.image ? (
+                        <img src={blog.image} alt={blog.title} className="h-48 w-full object-cover rounded-lg mb-4" />
+                      ) : (
+                        <div className="h-48 w-full rounded-lg bg-gray-300 mb-4 flex items-center justify-center text-gray-500">
+                          Image Placeholder
+                        </div>
+                      )}
+                      <div className="flex justify-between mb-2">
+                        <h4 className="text-xl font-semibold capitalize truncate">{blog.title}</h4>
+                        <p className="text-gray-700 text-sm">{timeAgo(blog.createdAt)}</p>
                       </div>
-                      <div className="flex justify-between">
-                        <h4 className="text-xl font-semibold mb-2 capitalize">{blog.title.slice(0, 22)}</h4>
-                        <p className="text-gray-700 text-base">{timeAgo(blog.createdAt)}</p>
-                      </div>
-                      <p className="text-gray-700 text-base">{blog.content.slice(0, 40)}...</p>
-                      <div className="flex items-center mt-4">
+                      <p className="text-gray-700 text-base mb-4 flex-grow">{blog.content.slice(0, 100)}...</p>
+                      <div className="flex items-center mt-auto">
                         <div className="bg-gray-300 w-10 h-10 rounded-full mr-3 flex items-center justify-center">
                           <span className="text-gray-600 font-bold">{blog.author ? blog.author[0] : 'U'}</span>
                         </div>
@@ -126,21 +118,9 @@ export default function Dashboard() {
                           <p className="font-semibold text-gray-700 text-sm capitalize">By <span className="font-bold">{blog.author || 'Unknown'}</span></p>
                         </div>
                       </div>
-                  
-
-                      <div className="flex justify-end items-center mt-4">
-                      <button 
-                            onClick={() => deletePost(blog._id)}
-                            className="bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded-md text-sm mr-3"
-                          >
-                            Edit
-                          </button>
-                      <button 
-                            onClick={() => deletePost(blog._id)}
-                            className="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-md text-sm mr-3"
-                          >
-                            Delete
-                          </button>
+                    </div>
+                    <div className="p-4 border-t">
+                      <div className="flex justify-end items-center">
                         <Link to={`/blog/${blog._id}`} className="text-green-500 hover:underline">Read More</Link>
                       </div>
                     </div>

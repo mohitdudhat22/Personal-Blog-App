@@ -1,5 +1,10 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+dotenv.config();
+const session = require('express-session');
+
 
 exports.registerUser = async (req, res) => {
     try {
@@ -7,6 +12,10 @@ exports.registerUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({ email, password: hashedPassword, username, posts});
         await user.save();
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+        res.cookie('token', token, { httpOnly: true });
+        //store user data in session in frontend
+        res.session.user = user;
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Error registering user', error });
@@ -42,9 +51,9 @@ exports.loginUser = async (req, res) => {
             username: user.username,
             userPosts: user.posts
         };
-        
-        res.cookie('users', userData, { httpOnly: true });
-        res.status(200).json({...userData, message: 'User logged in successfully', });
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+        res.cookie('token', token, { httpOnly: true });
+        res.status(200).json({...userData, message: 'User logged in successfully' });
     } catch (error) {
         console.error('Login error:', error);
         res.status(500).json({ message: 'Error logging in', error: error.message });
