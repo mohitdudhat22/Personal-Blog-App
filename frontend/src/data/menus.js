@@ -2,7 +2,7 @@ export const menus = [
     {
         id:1,
         name:`Home`,
-        link:`/`
+        link:`/dashboard`
     },
     {
         id:2,

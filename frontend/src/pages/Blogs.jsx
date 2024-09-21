@@ -41,7 +41,7 @@ export default function Blogs() {
         withCredentials: true
       });
       console.log('Blog created:', response.data);
-      navigate('/');
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error creating blog:', error.response ? error.response.data : error.message);
       setError('Failed to create blog. Please try again.');

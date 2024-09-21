@@ -85,7 +85,7 @@ export default function Navber() {
                             {/* if user exist then show logout otherwise show login and signup  */}
                             {user ?
                                 <div className="flex items-center space-x-2">
-                                    <img src={user.profile} alt="avatar" className="w-8 h-8 rounded-full"/>
+                                    <img src="/profile.jpg" alt="avatar" className="w-8 h-8 rounded-full"/>
                                     {/* <span className="font-semibold uppercase bg-gray-400 text-white w-10 h-10 rounded-full p-2 text-center">{user.username.slice(0, 2)}</span> */}
                                     <span className="text-gray-500 font-semibold capitalize">{user.username}</span>
                                     <button onClick={logoutHandler} className="bg-green-500 text-white px-2 py-1 rounded">Logout</button>
@@ -148,8 +148,8 @@ export default function Navber() {
                         }
                         {user ?
                             <div className="flex items-center space-x-2 py-4">
-                                {/* <img src="https://cdn.iconscout.com/icon/free/png-512/free-avatar-370-456322.png?f=webp&w=256" alt="avatar" className="w-8 h-8 rounded-full"/> */}
-                                <span className="font-semibold uppercase bg-gray-400 text-white rounded-full p-2">{user?.username?.slice(0, 2)}</span>
+                                <img src="./profile.jpg" alt="avatar" className="w-8 h-8 rounded-full"/>
+                                {/* <span className="font-semibold uppercase bg-gray-400 text-white rounded-full p-2">{user?.username?.slice(0, 2)}</span> */}
                                 <span className="text-gray-500 font-semibold capitalize">{user.username}</span>
                                 <button onClick={logoutHandler} className="bg-green-500 text-white px-2 py-1 rounded">Logout</button>
                             </div>

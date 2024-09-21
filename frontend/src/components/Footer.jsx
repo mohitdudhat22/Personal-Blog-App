@@ -76,9 +76,7 @@ export default function Footer() {
                 <hr className="my-6 border-gray-700"/>
                 <div className="flex flex-wrap items-center md:justify-between justify-center">
                 <div className="w-full md:w-4/12 px-4 mx-auto text-center text-white">
-                    <div className="text-sm text-gray-600 font-semibold py-1">
-                    Made with <a href="" className="text-gray-600 hover:text-gray-900">React JS</a> by <a href="" className="text-gray-600 hover:text-gray-900">Mohit Dudhat</a>.
-                    </div>
+               
                     </div>
                     <div className="w-full md:w-8/12 px-4">
                     <ul className="flex flex-wrap list-none md:justify-end  justify-center">

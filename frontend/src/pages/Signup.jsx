@@ -65,7 +65,7 @@ export default function Signup() {
             // api cal
             registerUser(newUser);
             localStorage.setItem('users', JSON.stringify(users));
-            navigate('/login');
+            navigate('/');
     }
     return (
         <div className='bg-gray-100 h-screen flex justify-center items-center'>
@@ -103,7 +103,7 @@ export default function Signup() {
                         </div>
                     </form>
                 </div>
-                <p className='text-center'> do you have an account ? <Link className='text-blue-600 font-bold' to={`/login`}>Login</Link> </p>
+                <p className='text-center'> do you have an account ? <Link className='text-blue-600 font-bold' to={`/`}>Login</Link> </p>
             </div>
         </div>
     )
