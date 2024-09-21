@@ -31,7 +31,7 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: ['Content-Range', 'Set-Cookie'],
 };
-app.options('*', cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
