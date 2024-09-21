@@ -22,6 +22,8 @@ export default function Navber() {
 
     const logoutHandler = () => {
         localStorage.removeItem('user');
+        //remove the token from the cookie
+        document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
         setUser(null);
         navigate('/');
     }
@@ -92,7 +94,7 @@ export default function Navber() {
                                 </div>
                                 :
                                 <>
-                                    <Link to="/login" rel="noreferrer" className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300">Log In</Link>
+                                    <Link to="/" rel="noreferrer" className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300">Log In</Link>
                                     <Link to="/signup" rel="noreferrer" className="py-2 px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300">Sign Up</Link>
                                 </>
                             }
@@ -155,7 +157,7 @@ export default function Navber() {
                             </div>
                             :
                             <div className='pb-4 space-x-2'>
-                                <Link to="/login" rel="noreferrer" className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300">Log In</Link>
+                                <Link to="/" rel="noreferrer" className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300">Log In</Link>
                                 <Link to="/signup" rel="noreferrer" className="py-2 px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300">Sign Up</Link>
                             </div>
                         }

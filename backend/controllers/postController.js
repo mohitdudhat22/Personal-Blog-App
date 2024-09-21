@@ -25,8 +25,8 @@ exports.getPostById = async (req, res) => {
 exports.createPost = async (req, res) => {
   let userId = req.user.userId
   try {
-    const { title, content, author } = req.body;
-    const image = req.file.path;
+    const { title, content, author} = req.body;
+    const image = req.file ? req.file.path : null;
     const newPost = new BlogPost({ title, content, author , userId, image });
     const savedPost = await newPost.save();
     res.status(201).json(savedPost);

@@ -12,7 +12,6 @@ import Profile from "./pages/Profile"
 import Post from "./pages/Post"
 
 function App() {
-  
   return (
     <Routes>
       <Route path="/blog/:id" element={<Post />} />
@@ -21,7 +20,6 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/about" element={<About />} />
       <Route path="/blogs" element={<Blogs />} />
-      <Route path="/blog/:id" element={<Blog />} />
       <Route path="/edit/:id" element={<Edit />} />
       <Route path="/success" element={<Success />} />
       <Route path="*" element={<NotFound />} />
