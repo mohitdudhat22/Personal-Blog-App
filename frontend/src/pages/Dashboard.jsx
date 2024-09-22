@@ -5,7 +5,7 @@ import timeAgo from '../utilis/timeAgo'
 import axios from 'axios';
 
 export default function Dashboard() {
-  const [blogs, setBlogs] = useState([]);
+  const [blogs, setBlogs] = useState([] || localStorage.getItem('blogs'));
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const user = JSON.parse(localStorage.getItem('user')) || {};
