@@ -4,7 +4,9 @@ dotenv.config();
 
 const authMiddleware = (req, res, next) => {
     let token = req.cookies.token;
-    console.log(token , "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< this is token from middleware");
+    console.log(req.cookies , "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< this is cookies token from middleware");
+    console.log(req.headers.authorization , "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< this is authorization token from middleware");
+    console.log(req)
     // Check Authorization header if token is not in cookies
     if (!token && req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];
