@@ -8,6 +8,7 @@ export default function Profile() {
   const navigate = useNavigate();
   const users = JSON.parse(localStorage.getItem('users')) || []
   const user = JSON.parse(localStorage.getItem('user')) || {};
+  console.log(user , "this is user");
   const [blogs, setBlogs] = useState(JSON.parse(localStorage.getItem('blogs')) || []);
 
   const logoutHandler = () => {
@@ -25,11 +26,7 @@ export default function Profile() {
         throw new Error('No authentication token found');
       }
   
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/posts`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/posts`);
   
       console.log('API response:', response.data);
       return response.data;
@@ -64,17 +61,24 @@ export default function Profile() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const fetchedPosts = await getAllPosts();
-        const userPosts = fetchedPosts.filter(post => post?.author === user?.username);
-        setBlogs(userPosts);
-        localStorage.setItem('blogs', JSON.stringify(fetchedPosts));
-      } catch (err) {
-        console.log(err)
+        const token = localStorage.getItem('token');
+        if (!token) {
+          throw new Error('No authentication token found');
+        }
+    
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/getAllUserPosts/${user.userId}`);
+    
+        console.log('API response:', response.data);
+        setBlogs(response.data);
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+        throw error;
       }
     };
 
     fetchPosts();
-  }, [user?.username]);
+  }, []);
 
   return (
     <Layout>
