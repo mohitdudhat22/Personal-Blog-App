@@ -12,10 +12,9 @@ exports.registerUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({ email, password: hashedPassword, username, posts});
         await user.save();
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET , { expiresIn: '1h' });
         res.cookie('token', token, { httpOnly: true });
-        //store user data in session in frontend
-        res.session.user = user;
+        console.log(token , "this is token from register");
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Error registering user', error });
@@ -51,8 +50,9 @@ exports.loginUser = async (req, res) => {
             username: user.username,
             userPosts: user.posts
         };
-        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET , { expiresIn: '1h' });
         res.cookie('token', token, { httpOnly: true });
+        console.log(token , "this is token from login");
         res.status(200).json({...userData, message: 'User logged in successfully' , token});
     } catch (error) {
         console.error('Login error:', error);
