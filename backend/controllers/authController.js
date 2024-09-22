@@ -1,61 +1,68 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const dotenv = require('dotenv');
+dotenv.config();
+const session = require('express-session');
 
-const setCookie = (res, token) => {
-  res.cookie('token', token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-    maxAge: 3600000 // 1 hour in milliseconds
-  });
-};
 
 exports.registerUser = async (req, res) => {
-  try {
-    const { email, password, username } = req.body;
-    
-    // Check if user already exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: 'User already exists' });
+    try {
+        const { email, password, username, posts } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = new User({ email, password: hashedPassword, username, posts});
+        await user.save();
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.cookie('token', token, { 
+            httpOnly: true, 
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax'
+        });
+        res.status(201).json({ message: 'User registered successfully', token });
+    } catch (error) {
+        res.status(500).json({ message: 'Error registering user', error });
     }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ email, password: hashedPassword, username });
-    await user.save();
-
-    const token = jwt.sign({ userId: user.id, email: user.email, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    setCookie(res, token);
-
-    res.status(201).json({ message: 'User registered successfully', userId: user._id });
-  } catch (error) {
-    console.error('Registration error:', error);
-    res.status(500).json({ message: 'Error registering user', error: error.message });
-  }
 };
 
 exports.loginUser = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+    try {
+        const { email, password } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        console.log(hashedPassword,"<<<<this is hashed password" , password);
+        console.log('Login attempt:', email);
 
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+        const user = await User.findOne({ email });
+        if (!user) {
+            console.log('User not found:', email);
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        console.log('User found:', user);
+
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        console.log('Password valid:', isPasswordValid);
+
+        if (!isPasswordValid) {
+            console.log('Invalid password for user:', email);
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+        console.log(user);
+        const userData = {
+            id: user.id,
+            email: user.email,
+            username: user.username,
+            userPosts: user.posts
+        };
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.cookie('token', token, { 
+            httpOnly: true, 
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax'
+        });
+        res.status(200).json({...userData, message: 'User logged in successfully', token});
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ message: 'Error logging in', error: error.message });
     }
-
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-
-    const token = jwt.sign({ userId: user.id, email: user.email, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    setCookie(res, token);
-
-    res.status(200).json({ message: 'User logged in successfully', userId: user.id, email: user.email, username: user.username });
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ message: 'Error logging in', error: error.message });
-  }
 };
+
