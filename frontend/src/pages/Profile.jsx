@@ -4,7 +4,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import timeAgo from '../utilis/timeAgo';
 import axios from 'axios';
 
-export default function Profile() {
+function Profile() {
   const navigate = useNavigate();
   const users = JSON.parse(localStorage.getItem('users')) || []
   const user = JSON.parse(localStorage.getItem('user')) || {};
@@ -165,3 +165,5 @@ export default function Profile() {
     </Layout>
   )
 }
+
+export default Profile;
