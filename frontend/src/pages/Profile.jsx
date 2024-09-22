@@ -65,8 +65,8 @@ function Profile() {
         if (!token) {
           throw new Error('No authentication token found');
         }
-    
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/getAllUserPosts/${user.userId}`, {
+        console.log(user.id , "this is user id");
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/getAllUserPosts/${user.id}`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -87,7 +87,7 @@ function Profile() {
   return (
     <Layout>
       <div className="flex flex-col space-y-2 md:flex-row py-10 bg-gray-100 space-x-3">
-        <div className="mx-4 flex flex-col justify-center items-center basis-3/12 bg-white rounded-md space-y-3 py-4 px-4">
+        <div className="mx-4 flex flex-col justify-center items-center basis-3/12 bg-white rounded-md space-y-3 py-4 px-4 h-[500px]">
           {user?.profile ? (
             <img src={user.profile} alt="avatar" className="w-40 h-40 rounded-full object-cover" />
           ) : (
