@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
-const session = require('express-session');
 
 
 exports.registerUser = async (req, res) => {
@@ -51,7 +50,7 @@ exports.loginUser = async (req, res) => {
             userPosts: user.posts
         };
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET , { expiresIn: '1h' });
-        res.cookie('token', token, { httpOnly: true });
+        res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', });
         console.log(token , "this is token from login");
         res.status(200).json({...userData, message: 'User logged in successfully' , token});
     } catch (error) {
