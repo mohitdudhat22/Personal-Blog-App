@@ -26,7 +26,7 @@ export default function Login() {
             const user = response.data;
             // Store the token in localStorage
             localStorage.setItem('user', JSON.stringify(user));
-            localStorage.setItem('token', JSON.stringify(user.token));
+            localStorage.setItem('token', user.token);
 
             // Redirect to home page
             navigate('/dashboard');

@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
-authMiddleware = (req, res, next) => {
+const authMiddleware = (req, res, next) => {
     const token = req.cookies.token;
+    console.log(token);
     if (!token) {
         return res.status(401).json({ message: 'Unauthorized' });
     }

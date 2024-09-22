@@ -24,6 +24,7 @@ exports.getPostById = async (req, res) => {
 
 exports.createPost = async (req, res) => {
   let userId = req.user.userId
+  console.log(userId);
   try {
     const { title, content, author} = req.body;
     const image = req.file ? req.file.path : null;
