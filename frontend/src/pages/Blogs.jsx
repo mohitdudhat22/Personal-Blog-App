@@ -27,7 +27,10 @@ export default function Blogs() {
   const fetchPost = async (id) => {
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/posts/${id}`, {
-        withCredentials: true
+        withCredentials: true,
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
       });
       setTitle(response.data.title);
       setContent(response.data.content);
@@ -67,6 +70,7 @@ export default function Blogs() {
         await axios.put(`${import.meta.env.VITE_API_URL}/api/posts/${editId}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
           },
           withCredentials: true
         });
@@ -75,6 +79,7 @@ export default function Blogs() {
         await axios.post(`${import.meta.env.VITE_API_URL}/api/posts`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
           },
           withCredentials: true
         });

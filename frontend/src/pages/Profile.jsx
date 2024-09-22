@@ -3,7 +3,6 @@ import Layout from '../components/Layout'
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import timeAgo from '../utilis/timeAgo';
 import axios from 'axios';
-import api from '../api';
 
 export default function Profile() {
   const navigate = useNavigate();
@@ -67,7 +66,11 @@ export default function Profile() {
           throw new Error('No authentication token found');
         }
     
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/getAllUserPosts/${user.userId}`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/getAllUserPosts/${user.userId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
     
         console.log('API response:', response.data);
         setBlogs(response.data);
@@ -80,15 +83,6 @@ export default function Profile() {
 
     fetchPosts();
   }, []);
-
-  const fetchUserPosts = async () => {
-    try {
-        const response = await api.get(`/api/posts/user/${user.userId}`);
-        setBlogs(response.data);
-    } catch (error) {
-        console.error('Error fetching user posts:', error);
-    }
-  };
 
   return (
     <Layout>
